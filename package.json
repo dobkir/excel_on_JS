@@ -1,0 +1,20 @@
+{
+  "name": "excel_on_js",
+  "version": "1.0.0",
+  "description": "Pure JavaSrcipt Excel Application",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "  "
+  },
+  "keywords": [
+    "js",
+    "javascript",
+    "excel"
+  ],
+  "author": "Pavel Kirillov <p.kirillov2020@gmail.com>",
+  "license": "ISC"
+}
