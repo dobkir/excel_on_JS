@@ -4,12 +4,17 @@ const CopyPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 
+const isProd = process.env.NODE_ENV === 'production';  // в каком режиме сборки я сейчас
+const isDev = !isProd;
+
+const filename = ext => isDev ? `bundle.${ext}` : `bundle.[hash].${ext}`;
+
 module.exports = {
     context: path.resolve(__dirname, 'src'),
     mode: 'development',
-    entry: './index.js',
+    entry: ['@babel/polyfill', './index.js'],
     output: {
-        filename: 'bundle.[hash].js',
+        filename: filename('js'),
         path: path.resolve(__dirname, 'dist')
     },
     resolve: {
@@ -19,9 +24,20 @@ module.exports = {
             '@core': path.resolve(__dirname, 'src/core')
         }
     },
+    devtool: isDev ? 'source-map' : false,
+    devServer: {
+        contentBase: path.join(__dirname, 'dist'),
+        compress: true,
+        port: 3000,
+        hot: true
+    },
     plugins: [
         new HtmlWebpackPlugin({
-            template: 'index.html'
+            template: 'index.html',
+            minify: {
+                removeComments: isProd,
+                collapseWhitespace: isProd
+            }
         }),
         new CopyPlugin({
             patterns: [
@@ -35,25 +51,17 @@ module.exports = {
         }),
         new CleanWebpackPlugin(),
         new MiniCssExtractPlugin({
-            filename: 'bundle.[hash].css'
+            filename: filename('css')
         }),
     ],
     module: {
         rules: [
-            // {
-            //     test: /\.css$/i,
-            //     use: [MiniCssExtractPlugin.loader, 'css-loader'],
-            // },
             {
                 test: /\.s[ac]ss$/i,
                 use: [
-                    // // Creates `style` nodes from JS strings
-                    // "style-loader",
                     MiniCssExtractPlugin.loader,
-                    // Translates CSS into CommonJS
-                    "css-loader",
-                    // Compiles Sass to CSS
-                    "sass-loader",
+                    'css-loader',
+                    'sass-loader',
                 ],
             },
             {
