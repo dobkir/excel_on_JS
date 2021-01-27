@@ -1,10 +1,10 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const CopyPlugin = require("copy-webpack-plugin");
+const CopyPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 
-const isProd = process.env.NODE_ENV === 'production';  // в каком режиме сборки я сейчас
+const isProd = process.env.NODE_ENV === 'production';
 const isDev = !isProd;
 
 const filename = ext => isDev ? `bundle.${ext}` : `bundle.[hash].${ext}`;
@@ -26,10 +26,12 @@ module.exports = {
     },
     devtool: isDev ? 'source-map' : false,
     devServer: {
+        historyApiFallback: true,
         contentBase: path.join(__dirname, 'dist'),
+        open: true,
         compress: true,
-        port: 3000,
-        hot: true
+        hot: true,
+        port: 3000
     },
     plugins: [
         new HtmlWebpackPlugin({
@@ -57,6 +59,22 @@ module.exports = {
     module: {
         rules: [
             {
+                test: /\.html$/i,
+                loader: 'html-loader',
+            },
+            {
+                test: /\.css$/i,
+                use: [
+                    {
+                        loader: MiniCssExtractPlugin.loader,
+                        options: {
+                            hmr: isDev, // hot modal reloader
+                        },
+                    },
+                    'css-loader'
+                ],
+            },
+            {
                 test: /\.s[ac]ss$/i,
                 use: [
                     MiniCssExtractPlugin.loader,
@@ -76,4 +94,5 @@ module.exports = {
             },
         ],
     },
+    target: 'web'
 }
