@@ -3,30 +3,35 @@ const CODES = {
   Z: 90
 };
 
-function toCell(cell) {
+function toCell(_, col) {
   return `
-  <div class="cell" contenteditable="">${cell}</div>
+  <div class="cell" contenteditable data-col="${col}"></div>
   `
 };
 
-function toColumn(col) {
+function toColumn(col, index) {
   return `
-  <div class='column'>
+  <div class="column" data-type="resizable" data-col="${index}">
     ${col}
+    <div class="col__resize" data-resize="col"></div>
   </div>
   `
 };
 
 function createRow(index, content) {
+  const resize = index ? '<div class="row__resize" data-resize="row"></div>' : ''
   return `
-  <div class='row'>
-    <div class="row__info">${index ? index : ''}</div>
+  <div class="row" data-type="resizable">
+    <div class="row__info">
+    ${index ? index : ''}
+    ${resize}
+    </div>
     <div class="row__data">${content}</div>
   </div>
   `
 };
 
-function toChar(el, index) {
+function toChar(_, index) {
   return String.fromCharCode(CODES.A + index)
 };
 
