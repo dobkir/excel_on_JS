@@ -52,8 +52,19 @@ class Dom {
 
   getCoords() {
     return this.$el.getBoundingClientRect()
-  }
+  };
   // getBoundingClientRect() - returns the size of the element and its position relative to the viewport
+  findAll(selector) {
+    return this.$el.querySelectorAll(selector)
+  };
+
+  css(styles = {}) {
+    Object
+      .keys(styles)
+      .forEach(key => {
+        this.$el.style[key] = styles[key]
+      })
+  }
 
 };
 
@@ -68,4 +79,4 @@ $.create = (tagName, classes = '') => {
     el.classList.add(classes)
   };
   return $(el)
-};
+}
