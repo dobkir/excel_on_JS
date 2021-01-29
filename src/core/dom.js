@@ -42,6 +42,19 @@ class Dom {
     return this
   };
 
+  get data() {
+    return this.$el.dataset
+  };
+
+  closest(selector) {
+    return $(this.$el.closest(selector))
+  };
+
+  getCoords() {
+    return this.$el.getBoundingClientRect()
+  }
+  // getBoundingClientRect() - returns the size of the element and its position relative to the viewport
+
 };
 
 // event.target
