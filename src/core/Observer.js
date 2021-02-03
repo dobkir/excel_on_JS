@@ -4,8 +4,8 @@ export class Observer {
   };
 
   // notify the listener
-  // table.dispatch('table:select', {a: 1})
-  dispatch(event, ...args) {
+  // table.observe('table:select', {a: 1})
+  observe(event, ...args) {
     if (!Array.isArray(this.listeners[event])) {
       return false
     };
