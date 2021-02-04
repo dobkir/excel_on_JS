@@ -1,4 +1,5 @@
 /* eslint-disable indent */
+const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const {
   CleanWebpackPlugin,
@@ -58,6 +59,9 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: filename('css'),
     }),
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+    })
   ],
   module: {
     rules: [{
